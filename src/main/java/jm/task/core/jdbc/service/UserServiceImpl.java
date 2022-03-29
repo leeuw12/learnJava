@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
 
     public void dropUsersTable() {
         userDaoJDBC.dropUsersTable();
-
     }
 
     public void saveUser(String name, String lastName, byte age) {
@@ -34,12 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> getAllUsers() {
-        System.out.println("getAllUsers --> Start");
-        List<User> list = new ArrayList<User>(userDaoJDBC.getAllUsers());
-        System.out.println("getAllUsers --> Got");
-        System.out.println(list);
-        System.out.println("getAllUsers --> End");
-        return list;
+        return new ArrayList<>(userDaoJDBC.getAllUsers());
     }
 
     public void cleanUsersTable() {

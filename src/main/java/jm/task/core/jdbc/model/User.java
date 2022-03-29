@@ -69,13 +69,4 @@ public class User {
                 ", age=" + age +
                 '}';
     }
-
-    public String print() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                '}';
-    }
 }
