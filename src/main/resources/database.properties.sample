@@ -1,0 +1,5 @@
+driver = com.mysql.jdbc.Driver
+dbName = mysqlDB
+url = jdbc:mysql://yourURL
+username = yourUsername
+password = yourPassword
