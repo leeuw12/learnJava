@@ -12,9 +12,14 @@ public class Util {
     private String username;
     private String password;
     private Connection connection;
+    Properties prop = new Properties();
 
     public Util() {
-        Properties prop = new Properties();
+        getDatabaseProperties();
+        startConnection();
+    }
+
+    private void getDatabaseProperties() {
         try (FileInputStream file = new FileInputStream("./src/main/resources/database.properties")) {
             prop.load(file);
             URL = prop.getProperty("url") + prop.getProperty("dbName");
@@ -25,18 +30,12 @@ public class Util {
         }
     }
 
-    public static void main(String[] args) {
-        Util util = new Util();
-        System.out.println(util.startConnection());
-    }
-
-    public Connection startConnection() {
+    private void startConnection() {
         try {
             connection = DriverManager.getConnection(URL, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return connection;
     }
 
     public Connection getConnection() {
