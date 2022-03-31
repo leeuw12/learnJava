@@ -3,6 +3,7 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,7 +47,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String sqlQuery = "SELECT * FROM users";
-        try (Statement statement = util.getConnection().createStatement();) {
+        try (Statement statement = util.getMySQLConnection().createStatement();) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             while (resultSet.next()) {
                 int id = resultSet.getInt(1);
@@ -57,7 +58,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setId((long) id);
                 userList.add(user);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return userList;
@@ -69,9 +70,10 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     private void makeQuery(String sqlQuery) {
-        try (Statement statement = util.getConnection().createStatement();) {
+        try (Statement statement = util.getMySQLConnection().createStatement();) {
             statement.executeUpdate(sqlQuery);
-        } catch (SQLException e) {
+            util.getMySQLConnection().close();
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
