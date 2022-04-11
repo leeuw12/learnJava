@@ -13,7 +13,7 @@ import java.util.List;
 
 
 public class UserDaoHibernateImpl implements UserDao {
-    Util util = new Util();
+    private Util util = new Util();
 
     public UserDaoHibernateImpl() {
     }
@@ -32,7 +32,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        String sqlQuery = "DROP TABLE user;";
+        String sqlQuery = "DROP TABLE IF EXISTS user;";
         makeQuery(sqlQuery);
     }
 

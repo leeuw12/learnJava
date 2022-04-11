@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    Util util = new Util();
+    private Util util = new Util();
 
 
     public UserDaoJDBCImpl() {
@@ -29,7 +29,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        String sqlQuery = "DROP TABLE users;";
+        String sqlQuery = "DROP TABLE IF EXISTS users;";
         makeQuery(sqlQuery);
     }
 
@@ -47,7 +47,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String sqlQuery = "SELECT * FROM users";
-        try (Statement statement = util.getMySQLConnection().createStatement();) {
+        try (Statement statement = util.getMySQLConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(sqlQuery);
             while (resultSet.next()) {
                 int id = resultSet.getInt(1);
