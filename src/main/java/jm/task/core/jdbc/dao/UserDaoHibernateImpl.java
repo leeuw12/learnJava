@@ -28,20 +28,29 @@ public class UserDaoHibernateImpl implements UserDao {
                 " constraint table_name_pk" +
                 " primary key (id)" +
                 ");";
-        try (PreparedStatement preparedStatement = util.getMySQLConnection().prepareStatement(sqlQuery)) {
-            preparedStatement.executeUpdate(sqlQuery);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        Session session = util.getSession();
+        try (session) {
+            Transaction tx1 = session.beginTransaction();
+            util.getSession()
+                    .createSQLQuery(sqlQuery)
+                    .executeUpdate();
+            tx1.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void dropUsersTable() {
-        String sqlQuery = "DROP TABLE IF EXISTS user;";
-        try (PreparedStatement preparedStatement = util.getMySQLConnection().prepareStatement(sqlQuery)) {
-            preparedStatement.executeUpdate(sqlQuery);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        Session session = util.getSession();
+        try (session) {
+            Transaction tx1 = session.beginTransaction();
+            util.getSession()
+                    .createSQLQuery("DROP TABLE IF EXISTS user")
+                    .executeUpdate();
+            tx1.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -95,14 +104,6 @@ public class UserDaoHibernateImpl implements UserDao {
             tx1.commit();
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    private void makeQuery(String sqlQuery) {
-        try (Statement statement = util.getMySQLConnection().createStatement()) {
-            statement.executeUpdate(sqlQuery);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
         }
     }
 }
