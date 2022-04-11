@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -20,20 +21,28 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void createUsersTable() {
-        String sqlQuery = "create table user (id int auto_increment," +
+        String sqlQuery = "CREATE TABLE IF NOT EXISTS user (id int auto_increment," +
                 " name varchar(64) not null," +
                 " lastName varchar(64) not null," +
                 " age int not null," +
                 " constraint table_name_pk" +
                 " primary key (id)" +
                 ");";
-        makeQuery(sqlQuery);
+        try (PreparedStatement preparedStatement = util.getMySQLConnection().prepareStatement(sqlQuery)) {
+            preparedStatement.executeUpdate(sqlQuery);
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void dropUsersTable() {
         String sqlQuery = "DROP TABLE IF EXISTS user;";
-        makeQuery(sqlQuery);
+        try (PreparedStatement preparedStatement = util.getMySQLConnection().prepareStatement(sqlQuery)) {
+            preparedStatement.executeUpdate(sqlQuery);
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
